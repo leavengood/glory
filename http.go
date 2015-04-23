@@ -28,7 +28,7 @@ func (uh *updateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		timestamp := r.FormValue("timestamp")
 		signature := r.FormValue("signature")
 
-		fmt.Printf("URL: %s, sha1: %s, timestamp: %s, signature: %s\n", url, sha1, timestamp, signature)
+		fmt.Printf("Received update request with URL: %s, sha1: %s, timestamp: %s, signature: %s\n", url, sha1, timestamp, signature)
 
 		ur := NewUpdateRequest(url, sha1)
 		ur.SetTimestamp(timestamp)

@@ -31,6 +31,7 @@ func updateExecutable(url, sha1 string) error {
 	// Verify the checksum
 	err = verifyChecksum(newFile, sha1)
 	if err != nil {
+		fmt.Println("Checksum does not match file")
 		return err
 	}
 

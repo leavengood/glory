@@ -2,6 +2,7 @@ package glory
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -10,7 +11,10 @@ import (
 
 const dateFormat = "20060102150405"
 
-var expiredTimeout = time.Second * 10
+var (
+	expiredTimeout = time.Second * 10
+	updateError    = errors.New("Update error")
+)
 
 type UpdateRequest struct {
 	url  string
@@ -38,9 +42,6 @@ func (ur *UpdateRequest) SendingNow() {
 }
 
 func (ur *UpdateRequest) Expired(now time.Time) bool {
-	fmt.Println(now)
-	fmt.Println(ur.time.Add(expiredTimeout))
-
 	return now.After(ur.time.Add(expiredTimeout))
 }
 
@@ -50,7 +51,6 @@ func (ur *UpdateRequest) Signature(secret string) string {
 	return generateChecksum(bytes.NewBufferString(m))
 }
 
-// TODO: return whether the update succeeded
 func (ur *UpdateRequest) Post(notifyUrl, secret string) error {
 	resp, err := http.PostForm(notifyUrl,
 		url.Values{"url": {ur.url}, "sha1": {ur.sha1}, "timestamp": {ur.Timestamp()},
@@ -61,6 +61,10 @@ func (ur *UpdateRequest) Post(notifyUrl, secret string) error {
 	}
 
 	fmt.Println(resp)
+
+	if resp.StatusCode != 200 {
+		return updateError
+	}
 
 	return nil
 }

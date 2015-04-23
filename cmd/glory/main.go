@@ -10,7 +10,13 @@ import (
 func Notify(notifyUrl, fileUrl, sha1, secret string) {
 	ur := glory.NewUpdateRequest(fileUrl, sha1)
 	ur.SendingNow()
-	ur.Post(notifyUrl, secret)
+	err := ur.Post(notifyUrl, secret)
+	fmt.Println(err)
+	if err != nil {
+		fmt.Println("The update failed")
+	} else {
+		fmt.Println("The update succeeded")
+	}
 }
 
 func main() {
