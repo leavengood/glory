@@ -50,7 +50,8 @@ func (uh *updateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Error", http.StatusInternalServerError)
 		} else {
 			fmt.Fprintf(w, "Update Succeeded")
-			uh.callback()
+			// Use a goroutine so this request can finish
+			go uh.callback()
 		}
 
 	} else {
