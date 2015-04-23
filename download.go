@@ -8,7 +8,7 @@ import (
 )
 
 // Download the given URL to the given writer
-func DownloadFile(url string, w io.Writer) error {
+func downloadFile(url string, w io.Writer) error {
 	resp, err := http.Get(url)
 	if err != nil {
 		return err

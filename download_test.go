@@ -16,7 +16,7 @@ func downloadFileTestHelper(t *testing.T, urlSuffix, served, expected string) {
 	defer ts.Close()
 
 	b := new(bytes.Buffer)
-	err := DownloadFile(fmt.Sprintf("%s/%s", ts.URL, urlSuffix), b)
+	err := downloadFile(fmt.Sprintf("%s/%s", ts.URL, urlSuffix), b)
 	if err != nil {
 		t.Errorf("Received unexpected error: %v", err)
 	}
