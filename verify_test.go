@@ -12,7 +12,7 @@ const (
 
 func TestVerifyChecksumSuccess(t *testing.T) {
 	r := bytes.NewBufferString(Quote)
-	err := VerifyChecksum(r, Checksum)
+	err := verifyChecksum(r, Checksum)
 	if err != nil {
 		t.Errorf("Received unexpected error: %v", err)
 	}
@@ -20,8 +20,8 @@ func TestVerifyChecksumSuccess(t *testing.T) {
 
 func TestVerifyChecksumFailure(t *testing.T) {
 	r := bytes.NewBufferString("Not Jefferson")
-	err := VerifyChecksum(r, Checksum)
-	if err != InvalidChecksum {
-		t.Errorf("Expected %v but received error: %v", InvalidChecksum, err)
+	err := verifyChecksum(r, Checksum)
+	if err != invalidChecksum {
+		t.Errorf("Expected %v but received error: %v", invalidChecksum, err)
 	}
 }

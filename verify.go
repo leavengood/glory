@@ -7,20 +7,24 @@ import (
 	"io"
 )
 
-var InvalidChecksum = errors.New("Invalid checksum")
+var invalidChecksum = errors.New("Invalid checksum")
 
 // Verify that the given reader has the SHA1 checksum provided
-func VerifyChecksum(r io.Reader, checksum string) error {
+func verifyChecksum(r io.Reader, checksum string) error {
+	if generateChecksum(r) != checksum {
+		return invalidChecksum
+	}
+
+	return nil
+}
+
+func generateChecksum(r io.Reader) string {
 	h := sha1.New()
 
 	_, err := io.Copy(h, r)
 	if err != nil {
-		return err
+		return ""
 	}
 
-	if fmt.Sprintf("%x", h.Sum(nil)) != checksum {
-		return InvalidChecksum
-	}
-
-	return nil
+	return fmt.Sprintf("%x", h.Sum(nil))
 }
